@@ -34,13 +34,12 @@ import org.osmdroid.views.MapView
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MapFragment : Fragment() {
+class MapFragment : Fragment(), MapListener {
 
     private lateinit var binding: FragmentMapBinding
     private lateinit var map: MapView
     private lateinit var mapController: IMapController
     private var myLastLocation: GeoPoint? = null
-    private var isFirstTime = true
 
     private var foregroundOnlyLocationServiceBound = false
     private var timeRealLocationService: TimeRealLocationService? = null
@@ -102,6 +101,7 @@ class MapFragment : Fragment() {
         super.onResume()
         map.onResume()
         map.minZoomLevel = 5.0
+        map.addMapListener(this)
     }
 
     override fun onPause() {
@@ -134,11 +134,12 @@ class MapFragment : Fragment() {
             .flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach {
                 val geoPoint = GeoPoint(it.latitude, it.longitude)
-                myLastLocation = geoPoint
-                mapController.setZoom(20.0)
-                mapController.setCenter(geoPoint)
-                mapController.animateTo(geoPoint)
-                isFirstTime = false
+                if (myLastLocation != geoPoint) {
+                    myLastLocation = geoPoint
+                    mapController.setZoom(20.0)
+                    mapController.setCenter(geoPoint)
+                    mapController.animateTo(geoPoint)
+                }
             }
             .launchIn(lifecycleScope)
     }
@@ -150,5 +151,31 @@ class MapFragment : Fragment() {
 
     companion object {
         private const val TAG = "MapFragment"
+        private const val ZOOM = 20.0
+    }
+
+    override fun onScroll(event: ScrollEvent?): Boolean {
+        event?.let {
+            Log.i(TAG, "SCROLL x:${it.x} y:${it.y}")
+            if (it.x != 0 && it.y != 0) {
+                Log.i(TAG, "USERMOVE")
+            } else {
+                Log.i(TAG, "NOTUSERMOVE")
+            }
+        }
+        return false
+    }
+
+    override fun onZoom(event: ZoomEvent?): Boolean {
+
+        event?.let {
+            Log.i(TAG, "ZOOM ${it.zoomLevel}")
+            if (it.zoomLevel == ZOOM) {
+                Log.i(TAG, "NOTUSERZOOM")
+            } else {
+                Log.i(TAG, "USERZOOM")
+            }
+        }
+        return false
     }
 }

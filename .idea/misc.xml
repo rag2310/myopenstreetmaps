@@ -3,9 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/KATANA/Projects/MyOpenStreetMaps/app/src/main/res/drawable/background_card.xml" value="0.1" />
         <entry key="..\:/Users/KATANA/Projects/MyOpenStreetMaps/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/KATANA/Projects/MyOpenStreetMaps/app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="..\:/Users/KATANA/Projects/MyOpenStreetMaps/app/src/main/res/layout/fragment_map.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/KATANA/Projects/MyOpenStreetMaps/app/src/main/res/layout/fragment_map.xml" value="0.42397914856646396" />
       </map>
     </option>
   </component>
